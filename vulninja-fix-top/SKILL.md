@@ -14,9 +14,12 @@ find, fix, validate, PR.
 3. If empty at high+, tell the user the cloud is currently clean. Stop.
 
 4. Deduplicate findings before picking the top. If multiple entries
-   share the same `(resource, rule)` pair, keep only the most recent
-   (highest `created_at`) and discard the rest. Then identify the top
-   finding from the deduplicated set.
+   share the same `(short_description, rule)` pair, keep only the most
+   recent (highest `created_at`) and discard the rest. Then identify
+   the top finding from the deduplicated set. Note: `(resource, rule)`
+   is not a reliable key today — `resource` often carries the scan
+   label, not the actual cloud resource identity, which lives in
+   `short_description`.
 
 5. Identify the top finding with `remediation_available: true`. If none
    of the returned findings has remediation available, pick the top

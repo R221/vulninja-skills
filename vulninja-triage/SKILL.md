@@ -22,11 +22,14 @@ vul.ninja dashboard.
    for a fuller view.
 
 4. Deduplicate findings before presenting. The `list_dashboard_findings`
-   response sometimes contains duplicate entries — same resource, same
-   rule, different finding_ids. If multiple findings share the same
-   `(resource, rule)` pair, keep only the most recent one (highest
-   `created_at` value) and discard the rest. This is a known temporary
-   dashboard pipeline issue; the dedup is defensive.
+   response sometimes contains duplicate entries with different
+   finding_ids. If multiple findings share the same
+   `(short_description, rule)` pair, keep only the most recent one
+   (highest `created_at` value) and discard the rest. This is a known
+   temporary dashboard pipeline issue; the dedup is defensive. Note:
+   `(resource, rule)` is not a reliable key today — `resource` often
+   carries the scan label, not the actual cloud resource identity,
+   which lives in `short_description`.
 
 5. Present findings in priority order (critical first, then high). For
    each, one line: rule, severity, resource. Then the
