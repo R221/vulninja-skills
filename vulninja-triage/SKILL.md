@@ -21,15 +21,22 @@ vul.ninja dashboard.
    clean at high+ severity. Suggest re-running with severity_min="medium"
    for a fuller view.
 
-4. Present findings in priority order (critical first, then high). For
+4. Deduplicate findings before presenting. The `list_dashboard_findings`
+   response sometimes contains duplicate entries — same resource, same
+   rule, different finding_ids. If multiple findings share the same
+   `(resource, rule)` pair, keep only the most recent one (highest
+   `created_at` value) and discard the rest. This is a known temporary
+   dashboard pipeline issue; the dedup is defensive.
+
+5. Present findings in priority order (critical first, then high). For
    each, one line: rule, severity, resource. Then the
    `short_description`.
 
-5. Ask which finding the user wants to address first. When they pick:
+6. Ask which finding the user wants to address first. When they pick:
    - Call `get_dashboard_finding(scan_id, finding_id)` for full context.
    - If they want a fix, call
      `get_remediation_for_dashboard_finding(scan_id, finding_id)` and
      propose changes against their local repo if relevant files exist.
 
-6. Never apply fixes without explicit user approval. Always show the
+7. Never apply fixes without explicit user approval. Always show the
    diff first.
