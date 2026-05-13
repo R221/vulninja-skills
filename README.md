@@ -16,23 +16,35 @@ editor.
 
 ## Install
 
+Clone the repo somewhere stable, then symlink each skill into
+`~/.claude/skills/`. Claude Code scans the top level of that
+directory — each skill needs to live there directly, but symlinks
+work fine and let you keep one git checkout to update from.
+
 ```bash
-git clone https://github.com/R221/vulninja-skills ~/.claude/skills/vulninja
+mkdir -p ~/code && git clone https://github.com/R221/vulninja-skills ~/code/vulninja-skills
+mkdir -p ~/.claude/skills
+ln -s ~/code/vulninja-skills/vulninja-triage ~/.claude/skills/
+ln -s ~/code/vulninja-skills/vulninja-fix-top ~/.claude/skills/
+ln -s ~/code/vulninja-skills/vulninja-pr-review ~/.claude/skills/
 ```
 
-That's it. Restart Claude Code or start a new session. Type `/` and the
-three vulninja skills appear in the picker.
+Restart Claude Code or start a new session. Type `/` and the three
+vulninja skills appear in the picker.
 
 ## Update
 
 ```bash
-cd ~/.claude/skills/vulninja && git pull
+cd ~/code/vulninja-skills && git pull
 ```
+
+The symlinks pick up the new contents — no re-link needed.
 
 ## Uninstall
 
 ```bash
-rm -rf ~/.claude/skills/vulninja
+rm ~/.claude/skills/vulninja-triage ~/.claude/skills/vulninja-fix-top ~/.claude/skills/vulninja-pr-review
+rm -rf ~/code/vulninja-skills
 ```
 
 ## License
