@@ -31,9 +31,25 @@ vul.ninja dashboard.
    carries the scan label, not the actual cloud resource identity,
    which lives in `short_description`.
 
-5. Present findings in priority order (critical first, then high). For
-   each, one line: rule, severity, resource. Then the
-   `short_description`.
+5. Group findings by `resource_type_display` before presenting:
+   - For each resource_type group, sort the group internally by
+     severity (critical > high > medium > low).
+   - Sort groups by total severity weight descending — the group
+     containing a critical wins over a group of highs, etc.
+   - Show the display name as a header with the count, e.g.
+     `Key Vault (1)` or `Container Registry (2)`. Under each header,
+     list findings as one line each: severity, resource (or
+     `short_description` if `resource` is just the scan label), then
+     the `short_description`.
+   - If `resource_type_display` is missing on tool responses (older
+     MCP server) all findings collapse into a single "Other" group —
+     just list them flat in severity order in that case.
+   - If everything lands in one group anyway, skip the headers and
+     present a flat severity-sorted list.
+   - The "Other" group always lands at the bottom of the grouped
+     list, prefixed with a soft note like: "These findings don't have
+     a classifiable resource type — usually means the upstream cloud
+     API didn't include one."
 
 6. Ask which finding the user wants to address first. When they pick:
    - Call `get_dashboard_finding(scan_id, finding_id)` for full context.

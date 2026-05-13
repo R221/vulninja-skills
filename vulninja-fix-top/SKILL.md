@@ -31,7 +31,11 @@ find, fix, validate, PR.
 7. Call `get_remediation_for_dashboard_finding(scan_id, finding_id)`.
 
 8. Present:
-   - What's wrong (rule, evidence)
+   - What's wrong: a brief summary mentioning the resource type
+     (from `resource_type_display`, e.g. "Key Vault vulninja-kv
+     allows access from all networks") and the rule that fired.
+     Fall back to a generic "resource" phrasing if
+     `resource_type_display` is "Other" or missing.
    - Why it matters (severity)
    - The proposed fix (diff if code)
 
